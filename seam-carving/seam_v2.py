@@ -11,7 +11,6 @@ seam will be visualized:
     python3 seam_v2.py surfer.jpg surfer-seam-energy-v2.png
 """
 
-
 import sys
 
 from energy import compute_energy

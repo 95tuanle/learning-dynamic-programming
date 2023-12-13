@@ -9,7 +9,6 @@ representing pixels:
     python3 energy.py surfer.jpg surfer-energy.png
 """
 
-
 import sys
 
 from utils import Color, read_image_into_array, write_array_into_image
@@ -29,6 +28,7 @@ def energy_at(pixels, x, y):
     """
 
     raise NotImplementedError('energy_at is not implemented')
+
 
 def compute_energy(pixels):
     """

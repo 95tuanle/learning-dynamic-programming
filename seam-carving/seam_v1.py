@@ -10,7 +10,6 @@ be visualized:
     python3 seam_v1.py surfer.jpg surfer-seam-energy-v1.png
 """
 
-
 import sys
 
 from energy import compute_energy

@@ -10,7 +10,6 @@ resize your image!
     python3 carve.py surfer.jpg 10 surfer-resized.png
 """
 
-
 import sys
 
 from energy import compute_energy
@@ -55,6 +54,7 @@ def remove_n_lowest_seams_from_image(image, num_seams_to_remove):
 
     raise NotImplementedError(
         'remove_n_lowest_seams_from_image is not implemented')
+
 
 if __name__ == '__main__':
     if len(sys.argv) != 4:

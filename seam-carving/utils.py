@@ -6,7 +6,6 @@ aren't core the algorithm, they are implemented for you.
 There is no need to change any code in this module.
 """
 
-
 from PIL import Image
 
 
