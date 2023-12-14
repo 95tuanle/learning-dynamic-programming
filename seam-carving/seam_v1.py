@@ -1,8 +1,9 @@
 """
-The second step in the seam carving algorithm: finding the energy of the lowest-
-energy seam in an image. In this version of the algorithm, only the energy value
-of the seam is determined. However, this version of the algorithm still forms
-the basis of overall seam carving process.
+The second step in the seam carving algorithm: finding the energy of the lowest-energy seam in an image.
+In this version of the algorithm, only the energy value
+of the seam is determined.
+However, this version of the algorithm still forms
+the basis of the overall seam carving process.
 
 If you run this module in isolation, the location of the _end_ of the seam will
 be visualized:
@@ -16,7 +17,7 @@ from energy import compute_energy
 from utils import Color, read_image_into_array, write_array_into_image
 
 
-def compute_vertical_seam_v1(energy_data):
+def compute_vertical_seam_v1(energy_values):
     """
     Find the lowest-energy vertical seam given the energy of each pixel in the
     input image. The image energy should have been computed before by the
@@ -33,10 +34,29 @@ def compute_vertical_seam_v1(energy_data):
       2. The total energy of that seam.
     """
 
-    raise NotImplementedError('compute_vertical_seam_v1 is not implemented')
+    m_grid = [[0 for _ in row] for row in energy_values]
+
+    h = len(energy_values)
+    w = len(energy_values[0])
+
+    for x in range(w):
+        m_grid[0][x] = energy_values[0][x]
+
+    for y in range(h):
+        for x in range(w):
+            x_min = x - 1 if x > 0 else 0
+            x_max = x + 1 if x < w - 1 else w - 1
+
+            min_parent_energy = min(m_grid[y - 1][x_candidate] for x_candidate in range(x_min, x_max + 1))
+
+            m_grid[y][x] = energy_values[y][x] + min_parent_energy
+
+    local_min_end_x, local_min_seam_energy = min(enumerate(m_grid[h - 1]), key=lambda m: m[1])
+
+    return local_min_end_x, local_min_seam_energy
 
 
-def visualize_seam_end_on_image(pixels, end_x):
+def visualize_seam_end_on_image(pixels_array, end_x):
     """
     Draws a red box at the bottom of the image at the specified x-coordinate.
     This is done to visualize approximately where a vertical seam ends.
@@ -44,10 +64,10 @@ def visualize_seam_end_on_image(pixels, end_x):
     This is NOT one of the functions you have to implement.
     """
 
-    h = len(pixels)
-    w = len(pixels[0])
+    h = len(pixels_array)
+    w = len(pixels_array[0])
 
-    new_pixels = [[p for p in row] for row in pixels]
+    new_pixels = [[p for p in row] for row in pixels_array]
 
     min_x = max(end_x - 5, 0)
     max_x = min(end_x + 5, w - 1)
