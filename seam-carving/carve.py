@@ -14,7 +14,7 @@ import sys
 
 from energy import compute_energy
 from seam_v2 import compute_vertical_seam_v2, visualize_seam_on_image
-from utils import Color, read_image_into_array, write_array_into_image
+from utils import read_image_into_array, write_array_into_image
 
 
 def remove_seam_from_image(image, seam_xs):
@@ -28,7 +28,9 @@ def remove_seam_from_image(image, seam_xs):
     one element in each row, but will have the same number of rows.
     """
 
-    raise NotImplementedError('remove_seam_from_image is not implemented')
+    new_pixels = [[p for x, p in enumerate(row) if x != seam_xs[y]] for y, row in enumerate(image)]
+
+    return new_pixels
 
 
 def remove_n_lowest_seams_from_image(image, num_seams_to_remove):
@@ -52,8 +54,22 @@ def remove_n_lowest_seams_from_image(image, num_seams_to_remove):
     rows.
     """
 
-    raise NotImplementedError(
-        'remove_n_lowest_seams_from_image is not implemented')
+    for i in range(num_seams_to_remove):
+        print(f'Removing seam {i + 1} of {num_seams_to_remove}...')
+
+        print('Computing the energy...')
+        energy_data = compute_energy(image)
+        print('Finding the lowest-energy seam...')
+        seam_xs, _ = compute_vertical_seam_v2(energy_data)
+
+        print(f'Saving intermediate result to intermediate-{i}.png...')
+        visualized_pixels = visualize_seam_on_image(image, seam_xs)
+        write_array_into_image(visualized_pixels, f'intermediate-{i}.png')
+
+        print('Removing the seam from the image...')
+        image = remove_seam_from_image(image, seam_xs)
+
+    return image
 
 
 if __name__ == '__main__':
@@ -69,6 +85,5 @@ if __name__ == '__main__':
     pixels = read_image_into_array(input_filename)
 
     print(f'Saving {output_filename}')
-    resized_pixels = \
-        remove_n_lowest_seams_from_image(pixels, num_seams_to_remove)
+    resized_pixels = remove_n_lowest_seams_from_image(pixels, num_seams_to_remove)
     write_array_into_image(resized_pixels, output_filename)
