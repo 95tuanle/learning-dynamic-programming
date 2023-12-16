@@ -8,7 +8,6 @@ This file can be run directly to compare the greedy and Viterbi algorithms:
     python3 viterbi.py
 """
 
-
 from model import SPEECH_RECOGNITION_HMM
 
 
